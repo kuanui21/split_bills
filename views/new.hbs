@@ -1,0 +1,93 @@
+{{!-- 導覽列 --}}
+<nav class="navbar">
+  <a class="navbar-brand" href="/">
+    <i class="navbar-home fas fa-home"></i>
+  </a>
+  <h3 class="navbar-title">新增項目</h3>
+</nav>
+
+{{!-- 項目表單 --}}
+<div class="container">
+  <form action="/split-bills" method="POST">
+    <div class="item-text mb-3 row">
+      <i class="icon fas fa-calendar-alt col-sm-1"></i>
+      <label for="itemDate" class="col-sm-2 col-form-label">日期</label>
+      <div class="col-sm-9">
+        <input type="date" class="form-control-plaintext" id="itemDate" name="itemDate" placeholder="請輸入日期" required>
+      </div>
+    </div>
+
+    <div class="item-text mb-3 row">
+      <i class="icon fas fa-tag col-sm-1"></i>
+      <label for="itemName" class="col-sm-2 col-form-label">項目</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control-plaintext" id="itemName" name="itemName" placeholder="請輸入項目" required>
+      </div>
+    </div>
+
+    <div class="item-text row">
+      <i class="icon fas fa-dollar-sign col-sm-1"></i>
+      <label for="itemPrice" class="col-sm-2 col-form-label">金額</label>
+      <div class="col-sm-9">
+        <input type="number" class="form-control-plaintext" id="itemPrice" name="itemPrice" placeholder="請輸入金額" min="0"
+          required>
+      </div>
+    </div>
+
+    <div class="person-box">
+      <h5 class="my-3">誰付錢</h5>
+      <div class="check-box">
+        {{#each members}}
+        <input type="checkbox" class="btn-check" id="paidMember{{this._id}}" name="paidMember" autocomplete="off"
+          value="{{this.memberName}}">
+        <label class="btn btn-outline-primary" for="paidMember{{this._id}}">{{this.memberName}}</label>
+        {{/each}}
+
+      </div>
+    </div>
+
+    <div class="person-box">
+      <h5 class="my-3">分給誰</h5>
+      <div class="check-box">
+        {{#each members}}
+        <input type="checkbox" class="btn-check" id="toPaidMember{{this._id}}" name="toPaidMember" autocomplete="off"
+          value="{{this.memberName}}">
+        <label class="btn btn-outline-primary" for="toPaidMember{{this._id}}">{{this.memberName}}</label>
+        {{/each}}
+
+      </div>
+    </div>
+
+
+    <div class="member-delete col-3 mb-3">
+      <div class="new-btn d-flex justify-content-center">
+        <button type="submit" class="btn-add shared-btn btn-sm">新增</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+{{!-- <div class="mb-3 row">
+  <label for="staticEmail" class="col-sm-2 col-form-label">日期</label>
+  <div class="col-sm-10">
+    <input type="text" readonly class="form-control-plaintext" id="staticEmail" placeholder="請輸入日期">
+  </div>
+</div> --}}
+
+{{!-- <h5 class="row date">2022年5月2日</h5>
+<div class="bill">
+  <a href="./split-bills/id=3" class="bill-id">
+    <div class="row">
+      <div class="bill-icon col-2">
+        <i class=" fas fa-money-bill-alt"></i>
+      </div>
+      <div class="bill-info col-7">
+        <h5 class="bill-name">門票</h5>
+        <p class="bill-paid">同學C 先付 NT$ 1000</p>
+      </div>
+      <h5 class="bill-toPaid col-3">NT$ 200</h5>
+    </div>
+  </a>
+</div> --}}

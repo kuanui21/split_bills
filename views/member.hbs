@@ -22,14 +22,10 @@
           <button class="btn-delete btn-sm" type="submit">刪除</button>
         </form>
       </div>
-
-      {{!-- <div class="member-delete col-3 mb-3">
-        <button type="submit" class="btn-delete btn-sm">刪除</button>
-      </div> --}}
     </div>
     {{/each}}
 
-    <div class="member-add">
+    <div class="member-box">
       <h5 class="d-flex justify-content-center my-3">新增成員</h5>
 
       <form action="/split-bills/member" method="POST">
@@ -37,21 +33,13 @@
           <div class="member-name col-9">
             <input type="text" class="form-control" id="memberName" name="memberName" placeholder="請輸入姓名">
           </div>
-          <div class="member-delete col-3 mb-3">
-            <div class="new-btn d-flex justify-content-center">
+          <div class="member-add col-3">
               <button type="submit" class="btn-add btn-sm">新增</button>
-            </div>
           </div>
         </div>
       </form>
-
-      {{!-- <p class="member-add">+ 新增成員</p> --}}
     </div>
   </div>
-  {{!-- <form action="/split-bills/member" method="POST"> --}}
-    <div class="new-btn d-flex justify-content-center">
-      <a href="/" class="btn-done btn btn-sm" role="button">完成</a>
-      {{!-- <button type="submit">完成</button> --}}
-    </div>
-    {{!--
-  </form> --}}
+  <div class="new-btn d-flex justify-content-center">
+    <a href="/" class="btn-done shared-btn btn-sm" role="button">完成</a>
+  </div>

@@ -11,17 +11,37 @@
   <div class="banner"></div>
   <div class="banner-btn d-flex">
     <div class="member d-flex justify-content-center">
-      <a href="./split-bills/member" class="btn btn-sm" role="button">成員</a>
+      <a href="./split-bills/member" class="shared-btn btn-sm" role="button">成員</a>
     </div>
     <div class="balance d-flex justify-content-center">
-      <a href="./split-bills/balance" class="btn btn-sm" role="button">結餘</a>
+      <a href="./split-bills/balance" class="shared-btn btn-sm" role="button">結餘</a>
     </div>
   </div>
 </section>
 
 {{!-- 所有帳目 --}}
 <div class="list">
-  <div class="container">
+  <div class="index-container">
+
+    {{#each bills}}
+    <h5 class="row date">{{ this.itemDate }}</h5>
+    <div class="bill">
+      <a href="./split-bills/id=1" class="bill-id">
+        <div class="row">
+          <div class="bill-icon col-2">
+            <i class=" fas fa-money-bill-alt"></i>
+          </div>
+          <div class="bill-info col-7">
+            <h5 class="bill-name">{{ this.itemName }}</h5>
+            <p class="bill-paid">{{ this.paidMember }} 先付 NT$ {{ this.itemPrice }}</p>
+          </div>
+          <h5 class="bill-toPaid col-3">NT$ 100</h5>
+        </div>
+      </a>
+    </div>
+    {{/each}}
+{{!-- 
+
     <h5 class="row date">2022年5月7日</h5>
     <div class="bill">
       <a href="./split-bills/id=1" class="bill-id">
@@ -40,40 +60,40 @@
 
     <div class="bill">
       <a href="./split-bills/id=2" class="bill-id">
-      <div class="row">
-        <div class="bill-icon col-2">
-          <i class=" fas fa-money-bill-alt"></i>
+        <div class="row">
+          <div class="bill-icon col-2">
+            <i class=" fas fa-money-bill-alt"></i>
+          </div>
+          <div class="bill-info col-7">
+            <h5 class="bill-name">餐費</h5>
+            <p class="bill-paid">同學B 先付 NT$ 300</p>
+          </div>
+          <h5 class="bill-toPaid col-3">NT$ 60</h5>
         </div>
-        <div class="bill-info col-7">
-          <h5 class="bill-name">餐費</h5>
-          <p class="bill-paid">同學B 先付 NT$ 300</p>
-        </div>
-        <h5 class="bill-toPaid col-3">NT$ 60</h5>
-      </div>
       </a>
     </div>
 
     <h5 class="row date">2022年5月2日</h5>
     <div class="bill">
       <a href="./split-bills/id=3" class="bill-id">
-      <div class="row">
-        <div class="bill-icon col-2">
-          <i class=" fas fa-money-bill-alt"></i>
+        <div class="row">
+          <div class="bill-icon col-2">
+            <i class=" fas fa-money-bill-alt"></i>
+          </div>
+          <div class="bill-info col-7">
+            <h5 class="bill-name">門票</h5>
+            <p class="bill-paid">同學C 先付 NT$ 1000</p>
+          </div>
+          <h5 class="bill-toPaid col-3">NT$ 200</h5>
         </div>
-        <div class="bill-info col-7">
-          <h5 class="bill-name">門票</h5>
-          <p class="bill-paid">同學C 先付 NT$ 1000</p>
-        </div>
-        <h5 class="bill-toPaid col-3">NT$ 200</h5>
-      </div>
       </a>
-    </div>
+    </div> --}}
 
   </div>
 </div>
 
 <div class="new-btn d-flex justify-content-center">
-  <a href="./split-bills/new" class="btn btn-sm" role="button">
+  <a href="./split-bills/new" class="shared-btn btn-sm" role="button">
     <i class="fas fa-plus"></i>
   </a>
 </div>

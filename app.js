@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars')
 
 const mongoose = require('mongoose')
 const Member = require('./models/Member')
+const Bill = require('./models/Bill')
 const methodOverride = require('method-override')
 
 const app = express()
@@ -28,7 +29,11 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
-  res.render('index')
+  Bill.find()
+    .lean()
+    .sort({ itemDate: 'desc' })
+    .then(bills => res.render('index', { bills }))
+    .catch(error => console.log(error))
 })
 
 app.get('/split-bills/member', (req, res) => {
@@ -57,6 +62,25 @@ app.delete('/split-bills/member/:id', (req, res) => {
   return Member.findById(id)
     .then(member => member.remove())
     .then(() => res.redirect('back'))
+    .catch(error => console.log(error))
+})
+
+app.get('/split-bills/new', (req, res) => {
+  Member.find()
+    .lean()
+    .sort({ _id: 'asc' })
+    .then(members => res.render('new', { members }))
+    .catch(error => console.log(error))
+})
+
+app.post('/split-bills/', (req, res) => {
+  const { itemDate, itemName, itemPrice } = req.body
+  const { paidMember, toPaidMember } = req.body
+
+  return Bill.create({
+    itemDate, itemName, itemPrice, paidMember, toPaidMember
+  }) // 存入資料庫
+    .then(() => res.redirect('/')) // 新增完成後導回首頁
     .catch(error => console.log(error))
 })
 
