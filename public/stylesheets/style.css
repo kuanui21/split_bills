@@ -69,7 +69,7 @@ a:hover {
 }
 
 .container {
-  width: 80%;
+  width: 85%;
   margin: 2rem auto 3rem auto;
 }
 
@@ -238,7 +238,7 @@ a:hover {
 
 .btn-add,
 .btn-delete {
-  width: 100%;
+  width: 90%;
   line-height: 1.75rem;
   background-color: #dc4941;
   color: white;
@@ -281,4 +281,68 @@ a:hover {
 
 .person-box {
   padding: 0.3rem 0;
+}
+
+.item-member {
+  margin-bottom: 0.2rem;
+}
+
+
+/* 誰付、誰分 */
+.person-box-wrapper {
+  display: flex;
+  margin-top: 20px;
+}
+
+.person-box {
+  width: 50%;
+}
+
+.money {
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+}
+
+.check-box {
+  width: 95%;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+}
+
+.item-member {
+  width: 45%;
+  color: #88BF8B;
+  font-size: 1.2rem;
+}
+
+.paidPrice,
+.toPaidPrice {
+  width: 50%;
+  text-align: right;
+}
+
+.detail-check-box {
+  display: flex;
+  align-items: center;
+}
+
+.detail-member-box {
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail-member {
+  display: flex;
+  width: 100%;
+  color: #88BF8B;
+  font-size: 1.2rem;
+  margin: 7px 0;
+}
+
+.detail-Price {
+  width: 80%;
+  text-align: right;
+  margin-bottom: 3px;
 }

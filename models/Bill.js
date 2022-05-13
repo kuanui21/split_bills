@@ -14,14 +14,30 @@ const billSchema = new Schema({
     type: Number,
     required: true
   },
-  paidMember: {
+  member: {
     type: Array,
     required: true
   },
-  toPaidMember: {
+  // toPaidMember: {
+  //   type: Array,
+  //   required: true
+  // },
+  paidPrice: {
+    type: Array,
+    required: true
+  },
+  toPaidPrice: {
+    type: Array,
+    required: true
+  },
+  paidMember: {
     type: Array,
     required: true
   }
+  // averageCost: {
+  //   type: Number,
+  //   required: true
+  // }
 })
 
 module.exports = mongoose.model('Bill', billSchema)

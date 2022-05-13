@@ -28,14 +28,16 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
+// 取得首頁
 app.get('/', (req, res) => {
   Bill.find()
     .lean()
-    .sort({ itemDate: 'desc' })
+    .sort({ itemDate: 'desc', _id: 'desc' })
     .then(bills => res.render('index', { bills }))
     .catch(error => console.log(error))
 })
 
+// 取得成員頁
 app.get('/split-bills/member', (req, res) => {
   Member.find()
     .lean()
@@ -44,6 +46,7 @@ app.get('/split-bills/member', (req, res) => {
     .catch(error => console.log(error))
 })
 
+// 新增成員
 app.post('/split-bills/member', (req, res) => {
   const memberName = req.body.memberName
 
@@ -56,6 +59,7 @@ app.post('/split-bills/member', (req, res) => {
   }
 })
 
+// 刪除成員
 app.delete('/split-bills/member/:id', (req, res) => {
   const id = req.params.id
 
@@ -65,6 +69,7 @@ app.delete('/split-bills/member/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+// 取得新增項目頁
 app.get('/split-bills/new', (req, res) => {
   Member.find()
     .lean()
@@ -73,77 +78,129 @@ app.get('/split-bills/new', (req, res) => {
     .catch(error => console.log(error))
 })
 
+// 新增項目
 app.post('/split-bills/', (req, res) => {
   const { itemDate, itemName, itemPrice } = req.body
-  const { paidMember, toPaidMember } = req.body
+  const { paidPrice, toPaidPrice } = req.body
 
-  return Bill.create({
-    itemDate, itemName, itemPrice, paidMember, toPaidMember
-  }) // 存入資料庫
+  // let paidList = []
+  // let toPaidList = []
+  // let paid = []
+  // let toPaid = []
+  // let i = 0
+  // for (let i = 0; i < paidMember.length; i++) {
+  //   for (let j = 0; j < paidPrice.length; i++) {
+  //     paid = paidMember[i].connect(paidPrice[j])
+  //   }
+  // }
+
+  // const averageCost = Math.round(itemPrice / (toPaidMember.length) * 10) / 10
+  // const averageCost = 0
+  // console.log(averageCost)
+
+  Member.find()
+    .lean()
+    .sort({ _id: 'asc' })
+    .then(members => {
+      let memberList = []
+      members.forEach(member => {
+        // paid = member.memberName.concat(',', paidPrice[i])
+        // toPaid = member.memberName.concat(',', toPaidPrice[i])
+        // paidList = paidList.concat(paid)
+        // toPaidList = toPaidList.concat(toPaid)
+        memberList = memberList.concat(member.memberName)
+        // i++
+      })
+
+      let paidMember = []
+
+      for (let i = 0; i < members.length; i++) {
+        // let paidMember = paidList[i].slice(0, paidList[i].indexOf(','))
+        // let paidMemberPrice = paidList[i].slice(paidList[i].indexOf(',') + 1, paidList[i].length)
+        // console.log('先付的人', paidMember)
+        // console.log('先付的錢', paidMemberPrice)
+        if (paidPrice[i] > 0) {
+          paidMember = paidMember.concat(memberList[i])
+        }
+      }
+
+      Bill.create({
+        itemDate,
+        itemName,
+        itemPrice,
+        member: memberList,
+        paidPrice,
+        toPaidPrice,
+        paidMember
+      })
+    })
     .then(() => res.redirect('/')) // 新增完成後導回首頁
     .catch(error => console.log(error))
 })
 
+// 取得詳細內容頁
+app.get('/split-bills/:id', (req, res) => {
+  const id = req.params.id
+
+  return Bill.findById(id)
+    .lean()
+    .then(bill => res.render('detail', { bill, member: bill.member, paidPrice: bill.paidPrice, toPaidPrice: bill.toPaidPrice }))
+    .catch(error => console.log(error))
+})
+
+// 刪除項目
+app.delete('/split-bills/:id', (req, res) => {
+  const id = req.params.id
+  return Bill.findById(id)
+    .then(bill => bill.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
+// .then(bill => {
+
+//   console.log(bill)
+//   console.log(bill.paidList)
+//   console.log(bill.toPaidList)
+// })
+// .then((bill, members) => {
+//   Member.find()
+//     .lean()
+//     .sort({ _id: 'asc' })
+// .then(members => {
+//   for (let i = 0; i < members.length; i++) {
+//     console.log(members[i].memberName)
+// let A = []
+// A = A.concat(members[i].memberName)
+// return A
+// }
+// console.log('陣列:', A)
+// const paid = members.includes(bill)
+// if (paid) {
+//   console.log('有重複值')
+// } else {
+//   console.log('沒有')
+// }
+// })
+
+// .then(members => res.render('detail', { bill, members }))
+// })
+
+// let paidMember = []
+// let paidMemberPrice = []
+// let paidMemberList = []
+// let paidMemberPriceList = []
+// for (let i = 0; i < bill.paidList.length; i++) {
+//   let paidList = bill.paidList[i]
+//   let paidMember = paidList.slice(0, paidList.indexOf(','))
+//   let paidMemberPrice = paidList.slice(paidList.indexOf(',') + 1, paidList.length)
+
+//   paidMemberList = paidMemberList.concat(paidMember)
+//   paidMemberPriceList = paidMemberPriceList.concat(paidMemberPrice)
+// }
+// console.log(paidMemberList[0])
+// console.log(paidMemberPriceList)
+
 app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`)
 })
-
-//     Member.findOne({ memberName })
-//       .lean()
-//       .then(haveMembers => {
-//         if (!haveMembers) {
-//           console.log('沒有重複的')
-//   console.log('有重複')
-//   res.redirect('/')
-// } else {
-//   console.log('沒有重複的')
-//   return Member.create({
-//     memberName: memberName
-//   })
-
-// .catch(error => console.log(error))
-
-// })
-// }
-//   })
-// })
-
-//     Member.findOne({ memberName: member })
-//       .then(haveMembers => {
-//         if (haveMembers) {
-//           return
-//         }
-// else {
-//   return
-// }
-// if (haveMembers) {
-//   const result = memberName.filter(function (element, index, memberName) {
-//     return memberName.indexOf(element) === index
-//   })
-//   memberList = result
-// } else {
-//   return memberList
-// }
-// })
-//   .lean()
-//   .then(haveMembers => console.log(haveMembers))
-//   .then(() => res.redirect('/'))
-//   .catch(error => console.log(error))
-
-// .then(haveMembers => {
-//   if (haveMembers) {
-//     return res.redirect('/')
-//   } else {
-//     return Member.create({
-//       memberName: member
-//     })
-//       .then(() => res.redirect('/'))
-//       .catch(error => console.log(error))
-//   }
-// })
-//   }
-//   return Member.create({
-//     memberName: member
-//   })
-//     .then(() => res.redirect('/'))
-//     .catch(error => console.log(error))
