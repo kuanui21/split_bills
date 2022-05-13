@@ -80,8 +80,7 @@ app.get('/split-bills/new', (req, res) => {
 
 // 新增項目
 app.post('/split-bills/', (req, res) => {
-  const { itemDate, itemName, itemPrice } = req.body
-  const { paidPrice, toPaidPrice } = req.body
+  const { itemDate, itemName, itemPrice, paidPrice, toPaidPrice } = req.body
 
   // let paidList = []
   // let toPaidList = []
@@ -104,11 +103,11 @@ app.post('/split-bills/', (req, res) => {
     .then(members => {
       let memberList = []
       members.forEach(member => {
+        memberList = memberList.concat(member.memberName)
         // paid = member.memberName.concat(',', paidPrice[i])
         // toPaid = member.memberName.concat(',', toPaidPrice[i])
         // paidList = paidList.concat(paid)
         // toPaidList = toPaidList.concat(toPaid)
-        memberList = memberList.concat(member.memberName)
         // i++
       })
 
@@ -157,8 +156,27 @@ app.delete('/split-bills/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
-// .then(bill => {
+// 修改項目
+app.put('/split-bills/:id', (req, res) => {
+  const id = req.params.id
+  const { itemDate, itemName, itemPrice, paidPrice, toPaidPrice } = req.body
+  console.log(paidPrice)
+  console.log(toPaidPrice)
 
+  return Bill.findById(id)
+    .then(bill => {
+      bill.itemDate = itemDate
+      bill.itemName = itemName
+      bill.itemPrice = itemPrice
+      bill.paidPrice = paidPrice
+      bill.toPaidPrice = toPaidPrice
+      return bill.save()
+    })
+    .then(() => res.redirect(`/split-bills/${id}`))
+    .catch(error => console.log(error))
+})
+
+// .then(bill => {
 //   console.log(bill)
 //   console.log(bill.paidList)
 //   console.log(bill.toPaidList)
@@ -182,10 +200,8 @@ app.delete('/split-bills/:id', (req, res) => {
 //   console.log('沒有')
 // }
 // })
-
 // .then(members => res.render('detail', { bill, members }))
 // })
-
 // let paidMember = []
 // let paidMemberPrice = []
 // let paidMemberList = []
@@ -194,7 +210,6 @@ app.delete('/split-bills/:id', (req, res) => {
 //   let paidList = bill.paidList[i]
 //   let paidMember = paidList.slice(0, paidList.indexOf(','))
 //   let paidMemberPrice = paidList.slice(paidList.indexOf(',') + 1, paidList.length)
-
 //   paidMemberList = paidMemberList.concat(paidMember)
 //   paidMemberPriceList = paidMemberPriceList.concat(paidMemberPrice)
 // }
