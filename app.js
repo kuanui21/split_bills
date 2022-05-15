@@ -82,21 +82,6 @@ app.get('/split-bills/new', (req, res) => {
 app.post('/split-bills/', (req, res) => {
   const { itemDate, itemName, itemPrice, paidPrice, toPaidPrice } = req.body
 
-  // let paidList = []
-  // let toPaidList = []
-  // let paid = []
-  // let toPaid = []
-  // let i = 0
-  // for (let i = 0; i < paidMember.length; i++) {
-  //   for (let j = 0; j < paidPrice.length; i++) {
-  //     paid = paidMember[i].connect(paidPrice[j])
-  //   }
-  // }
-
-  // const averageCost = Math.round(itemPrice / (toPaidMember.length) * 10) / 10
-  // const averageCost = 0
-  // console.log(averageCost)
-
   Member.find()
     .lean()
     .sort({ _id: 'asc' })
@@ -104,20 +89,11 @@ app.post('/split-bills/', (req, res) => {
       let memberList = []
       members.forEach(member => {
         memberList = memberList.concat(member.memberName)
-        // paid = member.memberName.concat(',', paidPrice[i])
-        // toPaid = member.memberName.concat(',', toPaidPrice[i])
-        // paidList = paidList.concat(paid)
-        // toPaidList = toPaidList.concat(toPaid)
-        // i++
       })
 
       let paidMember = []
 
       for (let i = 0; i < members.length; i++) {
-        // let paidMember = paidList[i].slice(0, paidList[i].indexOf(','))
-        // let paidMemberPrice = paidList[i].slice(paidList[i].indexOf(',') + 1, paidList[i].length)
-        // console.log('先付的人', paidMember)
-        // console.log('先付的錢', paidMemberPrice)
         if (paidPrice[i] > 0) {
           paidMember = paidMember.concat(memberList[i])
         }
@@ -176,45 +152,112 @@ app.put('/split-bills/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
-// .then(bill => {
-//   console.log(bill)
-//   console.log(bill.paidList)
-//   console.log(bill.toPaidList)
-// })
-// .then((bill, members) => {
-//   Member.find()
-//     .lean()
-//     .sort({ _id: 'asc' })
-// .then(members => {
-//   for (let i = 0; i < members.length; i++) {
-//     console.log(members[i].memberName)
-// let A = []
-// A = A.concat(members[i].memberName)
-// return A
-// }
-// console.log('陣列:', A)
-// const paid = members.includes(bill)
-// if (paid) {
-//   console.log('有重複值')
-// } else {
-//   console.log('沒有')
-// }
-// })
-// .then(members => res.render('detail', { bill, members }))
-// })
-// let paidMember = []
-// let paidMemberPrice = []
-// let paidMemberList = []
-// let paidMemberPriceList = []
-// for (let i = 0; i < bill.paidList.length; i++) {
-//   let paidList = bill.paidList[i]
-//   let paidMember = paidList.slice(0, paidList.indexOf(','))
-//   let paidMemberPrice = paidList.slice(paidList.indexOf(',') + 1, paidList.length)
-//   paidMemberList = paidMemberList.concat(paidMember)
-//   paidMemberPriceList = paidMemberPriceList.concat(paidMemberPrice)
-// }
-// console.log(paidMemberList[0])
-// console.log(paidMemberPriceList)
+// 取得結餘頁
+app.get('/balance', (req, res) => {
+  let memberList = []
+
+  let backList = []
+  let backNameList = []
+  let giveList = []
+  let giveNameList = []
+  let newBackList = []
+  let newGiveList = []
+
+  let giveMember = []
+  let backMember = []
+  let giveMoney = []
+
+  Member.find()
+    .lean()
+    .sort({ _id: 'asc' })
+    .then(members => {
+      members.forEach(member => {
+        memberList = memberList.concat(member.memberName)
+      })
+
+      Bill.find()
+        .lean()
+        .then(bill => {
+          // 計算每個人的先付和應付
+          let paidTotal = 0
+          let toPaidTotal = 0
+          let paidTotalList = []
+          let toPaidTotalList = []
+
+          for (let x = 0; x < memberList.length; x++) {
+            for (let i = 0; i < bill.length; i++) {
+              for (let j = 0; j < memberList.length; j++) {
+                if (bill[i].member[j] === memberList[x]) {
+                  paidTotal += Number(bill[i].paidPrice[j])
+                  toPaidTotal += Number(bill[i].toPaidPrice[j])
+                }
+              }
+            }
+            paidTotalList = paidTotalList.concat(paidTotal)
+            toPaidTotalList = toPaidTotalList.concat(toPaidTotal)
+            paidTotal = 0
+            toPaidTotal = 0
+          }
+
+          // 計算每個人的差額
+          for (let i = 0; i < memberList.length; i++) {
+            const needPaid = toPaidTotalList[i] - paidTotalList[i]
+
+            if (needPaid < 0) {
+              backList = backList.concat(Math.abs(needPaid))
+              newBackList = newBackList.concat(Math.abs(needPaid))
+              backNameList = backNameList.concat(memberList[i])
+            }
+            if (needPaid > 0) {
+              giveList = giveList.concat(needPaid)
+              newGiveList = newGiveList.concat(needPaid)
+              giveNameList = giveNameList.concat(memberList[i])
+            }
+          }
+        })
+
+        .then(() => {
+          // 計算誰要付多少錢給誰
+          let i = 0
+          let j = 0
+          check1()
+
+          function check1() {
+            while ((newBackList[i] - newGiveList[j] > 0)) {
+              const restBack = newBackList[i] - newGiveList[j]
+
+              giveMember = giveMember.concat(giveNameList[j])
+              backMember = backMember.concat(backNameList[i])
+              giveMoney = giveMoney.concat(newGiveList[j])
+
+              newBackList[i] = restBack
+              newGiveList[j] = 0
+              j++
+              check2()
+            }
+          }
+          function check2() {
+            while ((newBackList[i] - newGiveList[j] <= 0)) {
+              const restGive = newGiveList[j] - newBackList[i]
+              newGiveList[j] = newBackList[i]
+              giveMember = giveMember.concat(giveNameList[j])
+              backMember = backMember.concat(backNameList[i])
+              giveMoney = giveMoney.concat(newGiveList[j])
+
+              newGiveList[j] = restGive
+              newBackList[i] = 0
+              i++
+              check1()
+            }
+          }
+        })
+        .then(() => {
+          res.render('balance', { backNameList, backList, giveNameList, giveList, giveMember, backMember, giveMoney })
+        })
+        .catch(error => console.log(error))
+    })
+    .catch(error => console.log(error))
+})
 
 app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`)

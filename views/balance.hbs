@@ -1,0 +1,65 @@
+{{!-- 導覽列 --}}
+<nav class="navbar">
+  <a class="navbar-brand" href="/">
+    <i class="navbar-home fas fa-home"></i>
+  </a>
+  <h3 class="navbar-title">結餘</h3>
+</nav>
+
+{{!-- 項目表單 --}}
+<div class="index-container">
+  <section class="balance-up">
+    <section class="balance-give">
+      <h4 class="balance-list-title">欠款</h4>
+      <div class="balance-form">
+        <div class="balance-form-col">
+          {{#each giveNameList}}
+          <h5 class="balance-form-name">{{this}}</h5>
+          {{/each}}
+        </div>
+        <div class="balance-form-col">
+          {{#each giveList}}
+          <h5 class="balance-form-price">NT$ {{this}}</h5>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+    <section class="balance-back">
+      <h4 class="balance-list-title">可收回</h4>
+      <div class="balance-form">
+        <div class="balance-form-col">
+          {{#each backNameList}}
+          <h5 class="balance-form-name">{{this}}</h5>
+          {{/each}}
+        </div>
+        <div class="balance-form-col">
+          {{#each backList}}
+          <h5 class="balance-form-price">NT$ {{this}}</h5>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <section class="balance-list-wrapper">
+    <h4 class="balance-list-title">細目</h4>
+    <div class="balance-form">
+      <div class="balance-form-col">
+        {{#each giveMember}}
+        <h5 class="balance-form-text">{{this}}<span class="balance-give-border">需支付</span></h5>
+        {{/each}}
+      </div>
+      <div class="balance-form-col2">
+        {{#each backMember}}
+        <h5 class="balance-form-name">{{this}}</h5>
+        {{/each}}
+      </div>
+      <div class="balance-form-col2">
+        {{#each giveMoney}}
+        <h5 class="balance-form-price">NT$ {{this}}</h5>
+        {{/each}}
+      </div>
+    </div>
+  </section>
+</div>
