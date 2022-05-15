@@ -18,10 +18,6 @@ const billSchema = new Schema({
     type: Array,
     required: true
   },
-  // toPaidMember: {
-  //   type: Array,
-  //   required: true
-  // },
   paidPrice: {
     type: Array,
     required: true
@@ -34,10 +30,6 @@ const billSchema = new Schema({
     type: Array,
     required: true
   }
-  // averageCost: {
-  //   type: Number,
-  //   required: true
-  // }
 })
 
 module.exports = mongoose.model('Bill', billSchema)
