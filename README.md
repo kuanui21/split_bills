@@ -1,11 +1,11 @@
 # 分帳工具
 
-![Index page about Restaurant List](./public/images/%E4%B8%80.PNG)
-![Index page about Restaurant List](./public/images/%E4%B8%89.PNG)
-![Index page about Restaurant List](./public/images/%E4%BA%8C.PNG)
+![Index page about Restaurant List](./public/images/split_bills_1.PNG)
+![Index page about Restaurant List](./public/images/split_bills_2.PNG)
+![Index page about Restaurant List](./public/images/split_bills_3.PNG)
 
 ## 介紹
-此專案提供多個獎項抽獎功能
+此專案提供記帳、自動算帳的功能，出遊時的帳目清楚記錄，不怕算錯錢。
 
 ## 功能列表
 - 使用者可以瀏覽所有分帳項目、項目日期、金額與支付人
