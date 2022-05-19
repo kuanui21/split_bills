@@ -36,34 +36,10 @@
       </div>
     </div>
 
-
-    {{!-- <div class="person-box">
-      <h5 class="my-3">誰付錢</h5>
-      <div class="check-box">
-        {{#each members}}
-        <input type="checkbox" class="btn-check" id="paidMember{{this._id}}" name="paidMember" autocomplete="off"
-          value="{{this.memberName}}">
-        <label class="btn btn-outline-primary item-member" for="paidMember{{this._id}}">{{this.memberName}}</label>
-        {{/each}}
-      </div>
-    </div>
-
-    <div class="person-box">
-      <h5 class="my-3">分給誰</h5>
-      <div class="check-box">
-        {{#each members}}
-        <input type="checkbox" class="btn-check" id="toPaidMember{{this._id}}" name="toPaidMember" autocomplete="off"
-          value="{{this.memberName}}">
-        <label class="btn btn-outline-primary item-member" for="toPaidMember{{this._id}}">{{this.memberName}}</label>
-        {{/each}}
-      </div>
-    </div> --}}
-
-
     <div class="person-box-wrapper">
       <div class="person-box">
-        <h5 class="my-2">誰付錢</h5>
-        <p class="money">剩餘 {{bill.itemPrice}}元/ {{bill.itemPrice}} 元</p>
+        <h5 class="my-3">誰付錢</h5>
+        {{!-- <p class="money">剩餘 {{bill.itemPrice}}元/ {{bill.itemPrice}} 元</p> --}}
         <div class="detail-check-box">
           <div class="detail-member-box">
             {{#each member}}
@@ -81,8 +57,8 @@
       </div>
 
       <div class="person-box">
-        <h5 class="my-2">分給誰</h5>
-        <p class="money">剩餘 {{bill.itemPrice}}元/ {{bill.itemPrice}} 元</p>
+        <h5 class="my-3">分給誰</h5>
+        {{!-- <p class="money">剩餘 {{bill.itemPrice}}元/ {{bill.itemPrice}} 元</p> --}}
         <div class="detail-check-box">
           <div class="detail-member-box">
             {{#each member}}
@@ -97,15 +73,6 @@
             {{/each}}
           </div>
         </div>
-
-        {{!-- {{#each bill}}
-        <div class="check-box">
-
-          <label for="toPaidMember{{this._id}}" class="form-label item-member">{{this.paidMember}}</label>
-          <input type="number" class="form-control toPaidPrice" id="toPaidMember{{this._id}}" name="toPaidPrice"
-            value="{{this.toPaidList}}" min="0">
-        </div>
-        {{/each}} --}}
       </div>
     </div>
 

@@ -103,8 +103,6 @@ router.delete('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
   const id = req.params.id
   const { itemDate, itemName, itemPrice, paidPrice, toPaidPrice } = req.body
-  console.log(paidPrice)
-  console.log(toPaidPrice)
 
   return Bill.findById(id)
     .then(bill => {
@@ -115,7 +113,7 @@ router.put('/:id', (req, res) => {
       bill.toPaidPrice = toPaidPrice
       return bill.save()
     })
-    .then(() => res.redirect(`/${id}`))
+    .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
 
